@@ -10,21 +10,23 @@
 # Description:       start script for devlock locksyste.
 ### END INIT INFO
 
+USER="pi"
 MQTT_BROKER="test.mosquitto.org"
 LIGHTBOX_CMD="/home/pi/lollightbox/lollightbox_mqtt.py"
 
 case "$1" in
 
     start)
-
+        su $USER <<EOF
         screen -S lollightbox -d -m bash -c "sudo $LIGHTBOX_CMD --host $MQTT_BROKER"
+EOF
     ;;
 
     stop)
         if [ "`pgrep lollightbox`" ]
         then
-            echo "Stop craftui and clients"
-            kill -9 `pgrep lollightbox`
+            echo "Stop lollightbox"
+            sudo kill -9 `pgrep lollightbox`
         fi
 
     ;;
