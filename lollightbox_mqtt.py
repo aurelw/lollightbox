@@ -108,7 +108,6 @@ def main():
     ## winkekatze
     while True:
         client.loop()
-	print("loop")
 
 
 if __name__ == "__main__":
