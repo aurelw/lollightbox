@@ -61,7 +61,7 @@ def on_message(client, msg):
     time.sleep(50/1000.0)
 
 
-def on_disconnect(client, foo):
+def on_disconnect(client):
     connected = False
     while not connected:
         try:
