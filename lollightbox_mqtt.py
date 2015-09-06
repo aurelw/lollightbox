@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 
 ###
 # Copyright 2015, Aurel Wildfellner.
@@ -23,8 +23,6 @@ import serial
 import argparse
 
 import mosquitto
-import topicconfig
-from topictypes import TopicTypes
 
 import sys
 import time
@@ -89,7 +87,7 @@ def main():
     
     
     ## setup MQTT client
-    client = mosquitto.Mosquitto()
+    client = mosquitto.Mosquitto("devlollightbox_h19")
     client.on_message = on_message
     client.on_disconnect = on_disconnect
     client.user_data = strip
