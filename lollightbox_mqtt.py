@@ -37,6 +37,7 @@ LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 
 color =  [16711680, 16728064, 16744448, 16760576, 16776960, 12582656, 8453888, 4259584, 65280, 65334, 65408, 65471, 65535, 49151, 33023, 16639, 255, 4194559, 8388863, 12517631, 16711935, 16711871, 16711808, 16711744, 8684676, 16777215]
+strip = None
 
 
 def scale(percentage, min, max):
@@ -44,11 +45,12 @@ def scale(percentage, min, max):
 
 
 class MQTT_TOPICS:
-   lightbox  = "devlol/h19/colorTest/#"
+   lightbox  = "devlol/h19/colorTest"
 
 
 
-def on_message(client, strip, msg):
+def on_message(client, msg):
+    global strip
     #print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
     print msg.payload
     print round(scale(int(msg.payload), 0, 25),0)
@@ -59,7 +61,7 @@ def on_message(client, strip, msg):
     time.sleep(50/1000.0)
 
 
-def on_disconnect(client, userdata, foo):
+def on_disconnect(client, foo):
     connected = False
     while not connected:
         try:
@@ -73,10 +75,11 @@ def on_disconnect(client, userdata, foo):
 
 
 def main():
+    global strip
 
     ## Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--host", default="192.168.7.2")
+    parser.add_argument("--host", default="192.168.8.2")
 
     args = parser.parse_args() 
     brokerHost = args.host
@@ -98,12 +101,14 @@ def main():
         print("failed to connect")
         on_disconnect(client, None, None)
 
+    print("connected to brokber")
     ## subscribe to topics
     client.subscribe(MQTT_TOPICS.lightbox)
 
     ## winkekatze
     while True:
         client.loop()
+	print("loop")
 
 
 if __name__ == "__main__":
